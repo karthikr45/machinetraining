@@ -38,7 +38,7 @@ import {
   Legend,
 } from 'recharts';
 import { apiFetch } from '@/lib/client';
-import { formatDate, formatDateTime, formatPct } from '@/lib/utils';
+import { formatDate, formatPct } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -365,7 +365,7 @@ export function ComplianceDashboard() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
-              <ReTooltip formatter={(v: number) => `${v}%`} />
+              <ReTooltip formatter={(value) => `${value}%`} />
               <Area
                 type="monotone"
                 dataKey="rate"

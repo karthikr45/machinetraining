@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { requireUser, handle } from '@/lib/api-helpers';
+import { requireUser, handle, ApiError } from '@/lib/api-helpers';
 import { getAuditTrail } from '@/lib/audit-logger';
 import { ROLE_LABELS } from '@/lib/types';
 import { formatDateTime } from '@/lib/utils';
@@ -27,7 +27,14 @@ export async function GET(req: Request) {
   const format = searchParams.get('format');
 
   if (format === 'csv') {
-    const user = await requireUser();
+    let user;
+    try {
+      user = await requireUser();
+    } catch (err) {
+      const status = err instanceof ApiError ? err.status : 500;
+      const message = err instanceof Error ? err.message : 'Unauthorized';
+      return NextResponse.json({ error: message }, { status });
+    }
     const fromRaw = searchParams.get('from');
     const toRaw = searchParams.get('to');
     const from = fromRaw ? new Date(fromRaw) : undefined;
