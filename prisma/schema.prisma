@@ -1,0 +1,396 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  TRAINING_MANAGER
+  OPERATOR
+  TECHNICIAN
+  QA_OFFICER
+  TRAINER
+}
+
+enum Industry {
+  PHARMA
+  FOOD_BEVERAGE
+  AUTOMOTIVE
+  OTHER
+}
+
+enum MachineStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ModuleType {
+  OVERVIEW
+  OPERATION
+  SAFETY
+  MAINTENANCE
+  COMPLIANCE
+  CLEANROOM
+  OJT
+}
+
+enum TrainingStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+enum CAPAStatus {
+  OPEN
+  INVESTIGATION
+  ACTION_TAKEN
+  VERIFICATION
+  CLOSED
+  OVERDUE
+}
+
+enum CAPASeverity {
+  MINOR
+  MAJOR
+  CRITICAL
+}
+
+enum DeviationType {
+  WEIGHT_VARIATION
+  EQUIPMENT_FAILURE
+  DOCUMENTATION_ERROR
+  PROCESS_DEVIATION
+  ENVIRONMENTAL
+  PERSONNEL
+  OTHER
+}
+
+enum SOPStatus {
+  DRAFT
+  UNDER_REVIEW
+  APPROVED
+  OBSOLETE
+}
+
+enum SubscriptionPlan {
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum RegulatoryFramework {
+  FDA_21_CFR
+  EU_GMP
+  WHO_GMP
+  SCHEDULE_M
+  HACCP
+  ISO_9001
+  IATF_16949
+}
+
+model Company {
+  id                  String              @id @default(cuid())
+  name                String
+  industry            Industry
+  subscriptionPlan    SubscriptionPlan    @default(BASIC)
+  address             String?
+  gstin               String?
+  licenseNumber       String?
+  regulatoryFramework RegulatoryFramework @default(SCHEDULE_M)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  users               User[]
+  machines            Machine[]
+  sopDocuments        SOPDocument[]
+}
+
+model User {
+  id                    String                @id @default(cuid())
+  name                  String
+  email                 String                @unique
+  password              String
+  role                  Role                  @default(OPERATOR)
+  department            String?
+  employeeId            String?
+  companyId             String
+  company               Company               @relation(fields: [companyId], references: [id])
+  isTrainer             Boolean               @default(false)
+  trainerQualifications Json?
+  preferredLanguage     String                @default("en")
+  createdAt             DateTime              @default(now())
+  trainingRecords       TrainingRecord[]
+  simulationRecords     SimulationRecord[]
+  chatMessages          ChatMessage[]
+  ojtRecordsAsTrainee   OJTRecord[]           @relation("Trainee")
+  ojtRecordsAsTrainer   OJTRecord[]           @relation("Trainer")
+  capaActions           CAPA[]                @relation("CAPAOwner")
+  auditLogs             AuditLog[]
+  signatures            ElectronicSignature[]
+}
+
+model Machine {
+  id               String            @id @default(cuid())
+  companyId        String
+  company          Company           @relation(fields: [companyId], references: [id])
+  name             String
+  type             String
+  industry         Industry
+  manufacturer     String?
+  modelNumber      String?
+  yearOfMfg        Int?
+  location         String?
+  description      String?
+  status           MachineStatus     @default(DRAFT)
+  thumbnailUrl     String?
+  requalifyMonths  Int               @default(12)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  documents        Document[]
+  modules          TrainingModule[]
+  trainingRecords  TrainingRecord[]
+  simulationConfig SimulationConfig?
+  chatMessages     ChatMessage[]
+  ojtRecords       OJTRecord[]
+  capas            CAPA[]
+  sopDocuments     SOPDocument[]
+}
+
+model SOPDocument {
+  id              String           @id @default(cuid())
+  companyId       String
+  company         Company          @relation(fields: [companyId], references: [id])
+  machineId       String?
+  machine         Machine?         @relation(fields: [machineId], references: [id])
+  title           String
+  sopNumber       String
+  version         String           @default("1.0")
+  status          SOPStatus        @default(DRAFT)
+  filePath        String?
+  extractedText   String?
+  changeReason    String?
+  approvedBy      String?
+  approvedAt      DateTime?
+  effectiveDate   DateTime?
+  reviewDate      DateTime?
+  previousVersion String?
+  createdAt       DateTime         @default(now())
+  trainingRecords TrainingRecord[]
+  auditLogs       AuditLog[]
+}
+
+model Document {
+  id            String   @id @default(cuid())
+  machineId     String
+  machine       Machine  @relation(fields: [machineId], references: [id])
+  fileName      String
+  filePath      String
+  fileType      String
+  fileSize      Int?
+  processed     Boolean  @default(false)
+  extractedText String?
+  createdAt     DateTime @default(now())
+}
+
+model TrainingModule {
+  id               String           @id @default(cuid())
+  machineId        String
+  machine          Machine          @relation(fields: [machineId], references: [id])
+  title            String
+  titleHi          String?
+  content          Json
+  contentHi        Json?
+  moduleType       ModuleType
+  order            Int
+  estimatedMinutes Int              @default(15)
+  sopVersion       String?
+  createdAt        DateTime         @default(now())
+  quiz             Quiz?
+  trainingRecords  TrainingRecord[]
+}
+
+model Quiz {
+  id           String         @id @default(cuid())
+  moduleId     String         @unique
+  module       TrainingModule @relation(fields: [moduleId], references: [id])
+  questions    Json
+  passingScore Int            @default(75)
+  maxAttempts  Int            @default(3)
+  createdAt    DateTime       @default(now())
+}
+
+model TrainingRecord {
+  id                String          @id @default(cuid())
+  userId            String
+  user              User            @relation(fields: [userId], references: [id])
+  machineId         String
+  machine           Machine         @relation(fields: [machineId], references: [id])
+  moduleId          String?
+  module            TrainingModule? @relation(fields: [moduleId], references: [id])
+  sopDocumentId     String?
+  sopDocument       SOPDocument?    @relation(fields: [sopDocumentId], references: [id])
+  status            TrainingStatus  @default(NOT_STARTED)
+  score             Float?
+  attempts          Int             @default(0)
+  startedAt         DateTime?
+  completedAt       DateTime?
+  expiresAt         DateTime?
+  isRequalification Boolean         @default(false)
+  signature         String?
+  signedAt          DateTime?
+  signedBy          String?
+  createdAt         DateTime        @default(now())
+  auditLogs         AuditLog[]
+  capaId            String?
+  capa              CAPA?           @relation(fields: [capaId], references: [id])
+}
+
+model OJTRecord {
+  id               String     @id @default(cuid())
+  traineeId        String
+  trainee          User       @relation("Trainee", fields: [traineeId], references: [id])
+  trainerId        String
+  trainer          User       @relation("Trainer", fields: [trainerId], references: [id])
+  machineId        String
+  machine          Machine    @relation(fields: [machineId], references: [id])
+  sopVersion       String
+  checklist        Json
+  overallResult    String
+  trainerComments  String?
+  traineeComments  String?
+  conductedAt      DateTime   @default(now())
+  trainerSignature String?
+  traineeSignature String?
+  trainerSignedAt  DateTime?
+  traineeSignedAt  DateTime?
+  locked           Boolean    @default(false)
+  auditLogs        AuditLog[]
+}
+
+model CAPA {
+  id                 String           @id @default(cuid())
+  companyId          String
+  capaNumber         String           @unique
+  title              String
+  description        String
+  severity           CAPASeverity
+  status             CAPAStatus       @default(OPEN)
+  deviationType      DeviationType
+  rootCause          String?
+  immediateAction    String?
+  preventiveAction   String?
+  ownerId            String
+  owner              User             @relation("CAPAOwner", fields: [ownerId], references: [id])
+  machineId          String?
+  machine            Machine?         @relation(fields: [machineId], references: [id])
+  dueDate            DateTime
+  closedAt           DateTime?
+  effectivenessCheck String?
+  effectivenessDate  DateTime?
+  autoGenerated      Boolean          @default(false)
+  triggerReason      String?
+  trainingRecords    TrainingRecord[]
+  auditLogs          AuditLog[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+}
+
+model SimulationConfig {
+  id               String   @id @default(cuid())
+  machineId        String   @unique
+  machine          Machine  @relation(fields: [machineId], references: [id])
+  batchSize        Int      @default(400000)
+  productName      String   @default("Tablet")
+  targetWeight     Float    @default(500)
+  targetHardness   Float    @default(6.5)
+  targetThickness  Float    @default(3.5)
+  targetLOD        Float    @default(2.0)
+  targetWeightGain Float    @default(3.0)
+  stages           Json
+  faultLibrary     Json
+  createdAt        DateTime @default(now())
+}
+
+model SimulationRecord {
+  id             String     @id @default(cuid())
+  userId         String
+  user           User       @relation(fields: [userId], references: [id])
+  machineId      String
+  batchNumber    String
+  totalScore     Float
+  stageScores    Json
+  faultsInjected Json
+  faultResponses Json
+  bmrData        Json
+  status         String
+  duration       Int
+  passed         Boolean
+  certificateUrl String?
+  completedAt    DateTime   @default(now())
+  auditLogs      AuditLog[]
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  machineId String
+  machine   Machine  @relation(fields: [machineId], references: [id])
+  message   String
+  response  String
+  createdAt DateTime @default(now())
+}
+
+model ElectronicSignature {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  recordType String
+  recordId   String
+  meaning    String
+  ipAddress  String?
+  userAgent  String?
+  signedAt   DateTime @default(now())
+  isValid    Boolean  @default(true)
+}
+
+model AuditLog {
+  id                 String            @id @default(cuid())
+  userId             String?
+  user               User?             @relation(fields: [userId], references: [id])
+  action             String
+  entityType         String
+  entityId           String
+  oldValue           Json?
+  newValue           Json?
+  changeReason       String?
+  ipAddress          String?
+  timestamp          DateTime          @default(now())
+  trainingRecordId   String?
+  trainingRecord     TrainingRecord?   @relation(fields: [trainingRecordId], references: [id])
+  ojtRecordId        String?
+  ojtRecord          OJTRecord?        @relation(fields: [ojtRecordId], references: [id])
+  capaId             String?
+  capa               CAPA?             @relation(fields: [capaId], references: [id])
+  sopDocumentId      String?
+  sopDocument        SOPDocument?      @relation(fields: [sopDocumentId], references: [id])
+  simulationRecordId String?
+  simulationRecord   SimulationRecord? @relation(fields: [simulationRecordId], references: [id])
+}
+
+model NotificationLog {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  subject   String
+  message   String
+  sentAt    DateTime @default(now())
+  delivered Boolean  @default(false)
+}
