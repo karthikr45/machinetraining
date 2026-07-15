@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { ALCOABadge } from '@/components/compliance/ALCOABadge';
 import { AuditTrailViewer } from '@/components/compliance/AuditTrailViewer';
+import { DataIntegrityCheck } from '@/components/compliance/DataIntegrityCheck';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,8 +19,11 @@ export default async function AuditTrailPage() {
         </p>
       </div>
 
-      <div className="rounded-xl border bg-card p-4 print:hidden">
-        <ALCOABadge />
+      <div className="grid gap-4 lg:grid-cols-3 print:hidden">
+        <div className="flex items-center rounded-xl border bg-card p-4 lg:col-span-2">
+          <ALCOABadge />
+        </div>
+        <DataIntegrityCheck className="lg:col-span-1" />
       </div>
 
       <AuditTrailViewer />

@@ -162,6 +162,10 @@ async function buildDataset(type: ExportType, companyId: string, range: DateRang
         })),
       };
     }
+    default: {
+      const exhaustive: never = type;
+      throw new ApiError(`Unsupported export type: ${String(exhaustive)}`, 422);
+    }
   }
 }
 
