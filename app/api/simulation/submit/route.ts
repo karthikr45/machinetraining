@@ -122,7 +122,7 @@ export async function POST(req: Request) {
         machineId,
         batchNumber,
         totalScore,
-        stageScores: stageScores as Prisma.InputJsonValue,
+        stageScores: stageScores as unknown as Prisma.InputJsonValue,
         faultsInjected: faultsInjected as unknown as Prisma.InputJsonValue,
         faultResponses: evaluatedFaults as unknown as Prisma.InputJsonValue,
         bmrData: bmrData as unknown as Prisma.InputJsonValue,
