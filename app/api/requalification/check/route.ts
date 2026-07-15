@@ -5,6 +5,8 @@ import { MANAGER_ROLES } from '@/lib/auth';
 import { getExpiryReport } from '@/lib/expiry-checker';
 import { addDays } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 export type CellStatus = 'valid' | 'expiring' | 'expired' | 'none';
 
 export interface MatrixCell {

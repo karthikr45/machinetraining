@@ -6,6 +6,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 import type { ModuleContent, QuizQuestion } from '@/lib/types';
 
+export const dynamic = "force-dynamic";
+
 const MODULE_TYPES: ModuleType[] = [
   'OVERVIEW',
   'OPERATION',

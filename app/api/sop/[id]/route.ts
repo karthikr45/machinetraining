@@ -5,6 +5,8 @@ import { MANAGER_ROLES } from '@/lib/auth';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 const EDITABLE_STATUSES: SOPStatus[] = ['DRAFT', 'UNDER_REVIEW'];
 
 function parseDate(value: unknown): Date | null {

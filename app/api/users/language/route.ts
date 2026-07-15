@@ -2,6 +2,8 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { handle, requireUser, ApiError } from '@/lib/api-helpers';
 
+export const dynamic = "force-dynamic";
+
 const languageSchema = z.object({
   language: z.enum(['en', 'hi']),
 });

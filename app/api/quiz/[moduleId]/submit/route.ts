@@ -6,6 +6,8 @@ import { computeExpiryDate } from '@/lib/expiry-checker';
 import { getClientIp } from '@/lib/utils';
 import type { QuizQuestion } from '@/lib/types';
 
+export const dynamic = "force-dynamic";
+
 interface SubmitBody {
   answers: number[];
 }

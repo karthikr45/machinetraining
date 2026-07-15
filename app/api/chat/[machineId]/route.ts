@@ -1,6 +1,8 @@
 import { handle, requireUser, ApiError } from '@/lib/api-helpers';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = "force-dynamic";
+
 /** GET the caller's chat history for a machine (ordered ascending). */
 export async function GET(
   _req: Request,

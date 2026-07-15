@@ -7,6 +7,8 @@ import { handle, requireUser, requireRole, ApiError } from '@/lib/api-helpers';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 /** Roles allowed to manage users in a company. */
 const USER_MANAGER_ROLES: Role[] = ['SUPER_ADMIN', 'ADMIN', 'TRAINING_MANAGER'];
 

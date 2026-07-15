@@ -5,6 +5,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 import { assignRequalification } from '@/lib/expiry-checker';
 
+export const dynamic = "force-dynamic";
+
 const APPROVER_ROLES: Role[] = ['SUPER_ADMIN', 'ADMIN', 'TRAINING_MANAGER', 'QA_OFFICER'];
 
 interface ApproveBody {

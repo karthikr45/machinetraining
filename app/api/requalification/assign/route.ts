@@ -3,6 +3,8 @@ import { requireRole, handle, ApiError } from '@/lib/api-helpers';
 import { MANAGER_ROLES } from '@/lib/auth';
 import { assignRequalification } from '@/lib/expiry-checker';
 
+export const dynamic = "force-dynamic";
+
 interface AssignBody {
   userId?: string;
   userIds?: string[];

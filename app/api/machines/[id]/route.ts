@@ -5,6 +5,8 @@ import { MANAGER_ROLES } from '@/lib/auth';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 const MACHINE_STATUSES: MachineStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
 const INDUSTRIES: Industry[] = ['PHARMA', 'FOOD_BEVERAGE', 'AUTOMOTIVE', 'OTHER'];
 

@@ -4,6 +4,8 @@ import { requireRole, handle, ApiError } from '@/lib/api-helpers';
 import { MANAGER_ROLES } from '@/lib/auth';
 import { updateCAPAStatus, checkCAPAEffectiveness } from '@/lib/capa-engine';
 
+export const dynamic = "force-dynamic";
+
 const STATUSES: CAPAStatus[] = [
   'OPEN',
   'INVESTIGATION',

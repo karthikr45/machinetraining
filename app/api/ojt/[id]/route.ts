@@ -6,6 +6,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 import { buildChecklist } from '../route';
 
+export const dynamic = "force-dynamic";
+
 function normaliseResult(value: unknown): 'PASS' | 'FAIL' | 'PENDING' {
   return value === 'PASS' || value === 'FAIL' ? value : 'PENDING';
 }

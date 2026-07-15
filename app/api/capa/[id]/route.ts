@@ -4,6 +4,8 @@ import { MANAGER_ROLES, isManager } from '@/lib/auth';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 /** GET /api/capa/[id] — full CAPA detail with owner, machine, audit trail and linked training records. */
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   return handle(async () => {
@@ -61,8 +63,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       ownerId?: string;
       dueDate?: Date;
     } = {};
-    const oldValue: Record<string, unknown> = {};
-    const newValue: Record<string, unknown> = {};
+    const oldValue: Record<string, string | number | boolean | null> = {};
+    const newValue: Record<string, string | number | boolean | null> = {};
 
     if (body.rootCause !== undefined) {
       data.rootCause = body.rootCause?.trim() || null;

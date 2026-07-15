@@ -2,6 +2,8 @@ import { requireUser, handle } from '@/lib/api-helpers';
 import { getExpiryReport } from '@/lib/expiry-checker';
 import { daysUntil } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 interface ExpiryRow {
   id: string;
   user: string;

@@ -4,6 +4,8 @@ import { requireRole, handle } from '@/lib/api-helpers';
 import { MANAGER_ROLES } from '@/lib/auth';
 import { ROLE_LABELS } from '@/lib/types';
 
+export const dynamic = "force-dynamic";
+
 const STATUS_RANK: Record<TrainingStatus, number> = {
   COMPLETED: 5,
   EXPIRED: 4,

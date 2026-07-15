@@ -4,6 +4,8 @@ import { MANAGER_ROLES } from '@/lib/auth';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp, incrementVersion } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 interface NewVersionBody {
   changeReason?: string;
 }

@@ -1,6 +1,8 @@
 import { handle, requireUser } from '@/lib/api-helpers';
 import { loadSimConfigDTO } from '@/lib/simulation-config-loader';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/simulation/config/[machineId]
  * Returns the effective simulation configuration for a machine (company-scoped).

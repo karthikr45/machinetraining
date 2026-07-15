@@ -6,6 +6,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 import type { InspectionResult } from '@/lib/types';
 
+export const dynamic = "force-dynamic";
+
 /** POST /api/mock-inspection/start — run a mock FDA inspection (managers only). */
 export async function POST(req: Request) {
   return handle(async (): Promise<{ result: InspectionResult }> => {

@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/components/ui/use-toast';
 import { apiFetch } from '@/lib/client';
-import { MAX_UPLOAD_BYTES } from '@/lib/pdf-parser';
+import { MAX_UPLOAD_BYTES } from '@/lib/upload-constants';
 import type { DocumentDTO, SopOption } from './types';
 
 function formatBytes(bytes: number | null): string {

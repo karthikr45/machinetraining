@@ -4,6 +4,8 @@ import { isManager } from '@/lib/auth';
 import { generateCertificateHtml, type CertificateData } from '@/lib/certificate-generator';
 import { addMonths } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/simulation/certificate/[id]
  * Returns a printable HTML certificate for a passed simulation record.

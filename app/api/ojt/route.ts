@@ -6,6 +6,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 import { OJT_CHECKLIST_TEMPLATE, type OJTChecklistItem } from '@/lib/types';
 
+export const dynamic = "force-dynamic";
+
 const RESULTS = ['PASS', 'FAIL', 'PENDING'] as const;
 type OverallResult = (typeof RESULTS)[number];
 

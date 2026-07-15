@@ -4,6 +4,8 @@ import { createElectronicSignature, getSignatureManifest } from '@/lib/electroni
 import { ROLE_LABELS } from '@/lib/types';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/signatures
  * With ?recordId= &recordType= → the signature manifest for that record.

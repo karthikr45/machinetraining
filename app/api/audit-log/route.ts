@@ -2,6 +2,8 @@ import { requireUser, handle } from '@/lib/api-helpers';
 import { getAuditTrail } from '@/lib/audit-logger';
 import { ROLE_LABELS } from '@/lib/types';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/audit-log
  * Immutable audit trail scoped to the caller's company.

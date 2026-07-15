@@ -2,6 +2,8 @@ import { handle, requireUser, ApiError } from '@/lib/api-helpers';
 import { prisma } from '@/lib/prisma';
 import { chatWithMachineAI } from '@/lib/claude';
 
+export const dynamic = "force-dynamic";
+
 interface ChatBody {
   machineId: string;
   message: string;

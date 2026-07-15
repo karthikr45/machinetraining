@@ -4,6 +4,8 @@ import { createElectronicSignature, verifyPassword } from '@/lib/electronic-sign
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 interface SignBody {
   password: string;
   meaning: string;

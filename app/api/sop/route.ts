@@ -6,6 +6,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 import { validateUpload, saveUploadedFile, extractTextFromFile } from '@/lib/pdf-parser';
 
+export const dynamic = "force-dynamic";
+
 const SOP_STATUSES: SOPStatus[] = ['DRAFT', 'UNDER_REVIEW', 'APPROVED', 'OBSOLETE'];
 
 function parseDate(value: unknown): Date | null {

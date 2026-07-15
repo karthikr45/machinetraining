@@ -1,6 +1,8 @@
 import { requireUser, handle } from '@/lib/api-helpers';
 import { verifySignature } from '@/lib/electronic-signature';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/signatures/verify/[id]
  * Verify that an electronic signature is present and valid.

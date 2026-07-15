@@ -6,6 +6,8 @@ import { handle, ApiError } from '@/lib/api-helpers';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 const registerSchema = z.object({
   name: z.string().trim().min(2, 'Name is required'),
   email: z.string().trim().email('A valid email is required'),

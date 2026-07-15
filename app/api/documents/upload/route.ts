@@ -5,6 +5,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 import { validateUpload, saveUploadedFile } from '@/lib/pdf-parser';
 
+export const dynamic = "force-dynamic";
+
 /** POST /api/documents/upload — multipart form (machineId + file). Managers only. */
 export async function POST(req: Request) {
   return handle(async () => {

@@ -7,6 +7,8 @@ import { getClientIp } from '@/lib/utils';
 import { extractTextFromFile } from '@/lib/pdf-parser';
 import { generateTrainingContent } from '@/lib/claude';
 
+export const dynamic = "force-dynamic";
+
 interface ProcessBody {
   documentId?: string;
   generateModules?: boolean;

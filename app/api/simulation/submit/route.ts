@@ -23,6 +23,8 @@ import { logAction } from '@/lib/audit-logger';
 import { lockRecord } from '@/lib/alcoa';
 import { addMonths, clamp, round, getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 function isSubmission(body: unknown): body is SimulationSubmission {
   if (!body || typeof body !== 'object') return false;
   const b = body as Record<string, unknown>;

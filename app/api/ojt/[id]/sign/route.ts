@@ -7,6 +7,8 @@ import { createElectronicSignature } from '@/lib/electronic-signature';
 import { checkAndCreateCAPA } from '@/lib/capa-engine';
 import { sendOJTCompletion } from '@/lib/email-service';
 
+export const dynamic = "force-dynamic";
+
 interface SignBody {
   role?: 'trainer' | 'trainee';
   password?: string;

@@ -4,6 +4,8 @@ import { isManager } from '@/lib/auth';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET the caller's training records, or — for managers — another user's records
  * within the same company via ?userId=. Joined with machine & module.

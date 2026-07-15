@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { requireUser, handle } from '@/lib/api-helpers';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/notifications
  * Recent NotificationLog entries for the caller, newest first.

@@ -4,6 +4,8 @@ import { loadSimConfigDTO } from '@/lib/simulation-config-loader';
 import { generateBatchNumber } from '@/lib/utils';
 import type { SimStartResponse } from '@/lib/simulation-shared';
 
+export const dynamic = "force-dynamic";
+
 interface StartBody {
   machineId?: string;
 }

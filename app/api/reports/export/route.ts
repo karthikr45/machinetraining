@@ -8,6 +8,8 @@ import { checkScheduleMCompliance } from '@/lib/schedule-m';
 import { ROLE_LABELS } from '@/lib/types';
 import { formatDate, formatDateTime, daysUntil } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 const EXPORT_TYPES = ['training', 'capa', 'audit', 'requalification', 'schedule-m'] as const;
 type ExportType = (typeof EXPORT_TYPES)[number];
 

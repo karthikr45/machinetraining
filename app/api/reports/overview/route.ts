@@ -5,6 +5,8 @@ import { isManager } from '@/lib/auth';
 import { addDays } from '@/lib/utils';
 import { getOverdueCAPAs } from '@/lib/capa-engine';
 
+export const dynamic = "force-dynamic";
+
 const MONTH_LABELS = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',

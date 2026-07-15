@@ -1,6 +1,8 @@
 import { requireUser, handle } from '@/lib/api-helpers';
 import { calculateReadinessScore } from '@/lib/mock-inspection-engine';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET /api/reports/inspection-ready
  * Inspection readiness score for the caller's company.

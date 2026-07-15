@@ -4,6 +4,8 @@ import { getAuditTrail } from '@/lib/audit-logger';
 import { ROLE_LABELS } from '@/lib/types';
 import { formatDateTime } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 function csvCell(value: unknown): string {
   if (value === null || value === undefined) return '';
   const s = typeof value === 'string' ? value : JSON.stringify(value);

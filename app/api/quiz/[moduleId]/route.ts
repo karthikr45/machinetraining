@@ -2,6 +2,8 @@ import { handle, requireUser, ApiError } from '@/lib/api-helpers';
 import { prisma } from '@/lib/prisma';
 import type { QuizQuestion } from '@/lib/types';
 
+export const dynamic = "force-dynamic";
+
 /**
  * GET the quiz for a module (company-scoped via module → machine → company).
  * Answers (correctIndex / explanation) are stripped from the payload.

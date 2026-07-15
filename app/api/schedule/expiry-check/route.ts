@@ -3,6 +3,8 @@ import { handle, ApiError } from '@/lib/api-helpers';
 import { runDailyExpiryCheck } from '@/lib/expiry-checker';
 import { addDays, formatDate } from '@/lib/utils';
 
+export const dynamic = "force-dynamic";
+
 /**
  * POST /api/schedule/expiry-check
  * Daily cron endpoint. Authorised by the `x-cron-secret` header matching

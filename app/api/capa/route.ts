@@ -6,6 +6,8 @@ import { logAction } from '@/lib/audit-logger';
 import { getClientIp, generateCAPANumber } from '@/lib/utils';
 import { sendCAPAAssignment } from '@/lib/email-service';
 
+export const dynamic = "force-dynamic";
+
 const SEVERITIES: CAPASeverity[] = ['MINOR', 'MAJOR', 'CRITICAL'];
 const STATUSES: CAPAStatus[] = [
   'OPEN',
