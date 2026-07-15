@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { requireUser, requireRole, handle, ApiError } from '@/lib/api-helpers';
-import { MANAGER_ROLES } from '@/lib/auth';
+import { MANAGER_ROLES, isManager } from '@/lib/auth';
 import { logAction } from '@/lib/audit-logger';
 import { getClientIp } from '@/lib/utils';
 
@@ -28,7 +28,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
     });
 
     if (!capa) throw new ApiError('CAPA not found', 404);
-    return { capa };
+    return { capa, canManage: isManager(user.role) };
   });
 }
 

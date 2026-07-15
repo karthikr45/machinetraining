@@ -9,6 +9,7 @@ const APPROVER_ROLES: Role[] = ['SUPER_ADMIN', 'ADMIN', 'TRAINING_MANAGER', 'QA_
 
 interface ApproveBody {
   assignRetraining?: boolean;
+  comment?: string;
 }
 
 interface AffectedUser {
@@ -26,6 +27,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     const user = await requireRole(APPROVER_ROLES);
     const body = (await req.json().catch(() => ({}))) as ApproveBody;
     const assignRetraining = body.assignRetraining === true;
+    const comment = body.comment?.trim();
 
     const sop = await prisma.sOPDocument.findFirst({
       where: { id: params.id, companyId: user.companyId },
@@ -35,7 +37,12 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
     const updated = await prisma.sOPDocument.update({
       where: { id: sop.id },
-      data: { status: 'APPROVED', approvedBy: user.name, approvedAt: new Date() },
+      data: {
+        status: 'APPROVED',
+        approvedBy: user.name,
+        approvedAt: new Date(),
+        ...(comment ? { changeReason: comment } : {}),
+      },
     });
 
     // Mark all other versions of the same SOP number as obsolete.
@@ -84,9 +91,11 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         affectedOperators: affectedUsers.length,
         retrainingAssigned: assignRetraining,
       },
-      changeReason: assignRetraining
-        ? 'SOP approved; requalification assigned to affected operators'
-        : 'SOP approved',
+      changeReason:
+        comment ||
+        (assignRetraining
+          ? 'SOP approved; requalification assigned to affected operators'
+          : 'SOP approved'),
       sopDocumentId: sop.id,
       ipAddress: getClientIp(req.headers),
     });

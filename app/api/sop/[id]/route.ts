@@ -56,6 +56,7 @@ interface UpdateSopBody {
   effectiveDate?: string | null;
   reviewDate?: string | null;
   status?: string;
+  changeReason?: string;
 }
 
 /** PUT /api/sop/[id] — update SOP metadata (managers). */
@@ -99,6 +100,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       }
       data.status = body.status as SOPStatus;
     }
+    const changeReason = body.changeReason?.trim();
+    if (changeReason) data.changeReason = changeReason;
 
     const sop = await prisma.sOPDocument.update({
       where: { id: existing.id },
@@ -117,7 +120,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         status: existing.status,
       },
       newValue: { title: sop.title, machineId: sop.machineId, status: sop.status },
-      changeReason: 'SOP metadata updated',
+      changeReason: changeReason || 'SOP metadata updated',
       sopDocumentId: sop.id,
       ipAddress: getClientIp(req.headers),
     });
